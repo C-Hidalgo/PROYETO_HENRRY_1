@@ -18,17 +18,17 @@ users_items = pd.read_csv('./Datasets/users_items.csv')
 # Devuelve el año con mas horas jugadas para dicho género.
 
 def PlayTimeGenre_fun(genero: str):
-    
-    # Verificar si la columna del género existe en el DataFrame
-    if genero not in users_items.columns:
-        print(f"No existe el género '{genero}' en el DataFrame.")
-        return None
-
+      
     users_items_suma= users_items.groupby('item_id')['playtime_forever'].sum().reset_index()
     
     #unifico el dataframeusers_items y steam_games
     funcion_1 = pd.merge(steam_games, users_items_suma, left_on='id', right_on='item_id')
     
+    # Verificar si la columna del género existe en el DataFrame
+    if genero not in funcion_1.columns:
+        print(f"No existe el género '{genero}' en el DataFrame.")
+        return None
+
     # Filtrar el DataFrame para el género proporcionado
     filtro_genero = funcion_1[funcion_1[genero] == 1]
 
