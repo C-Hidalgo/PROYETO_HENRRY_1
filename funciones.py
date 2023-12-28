@@ -9,7 +9,7 @@ import re
 import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
 
-### CARGA DE DATASETS ###
+### CARGA GENERAL DE DATASETS ###
 steam_games = pd.read_csv('./Datasets/steam_games.csv')
 user_reviews = pd.read_csv('./Datasets/user_reviews.csv')
 users_items = pd.read_csv('./Datasets/users_items.csv')
