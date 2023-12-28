@@ -10,9 +10,9 @@ import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
 
 ### CARGA DE DATASETS ###
-steam_games = pd.read_csv('./DataSets/steam_games.csv')
-user_reviews = pd.read_csv('./DataSets/user_reviews.csv')
-users_items = pd.read_csv('./DataSets/users_items.csv')
+steam_games = pd.read_csv('./Datasets/steam_games.csv')
+user_reviews = pd.read_csv('./Datasets/user_reviews.csv')
+users_items = pd.read_csv('./Datasets/users_items.csv')
 
 ### FUNCION Nº1 (PlayTimeGenre)###
 # Devuelve el año con mas horas jugadas para dicho género.
