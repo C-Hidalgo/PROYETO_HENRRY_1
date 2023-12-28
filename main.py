@@ -5,10 +5,6 @@ import uvicorn
 
 app = FastAPI()
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=10000, debug=True)
-
-
 @app.get('/')
 def bienvenida():
     return {'API de consultas a una base de datos de la Plataforma Steam'}
@@ -23,3 +19,7 @@ def PlayTimeGenre(genero:str):
         return PlayTimeGenre_fun(genero)
     except Exception as e:
         return {"Error":str(e)}
+    
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=10000, debug=True)

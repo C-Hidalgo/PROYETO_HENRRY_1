@@ -18,33 +18,33 @@ users_items = pd.read_csv('./Datasets/users_items.csv')
 # Devuelve el año con mas horas jugadas para dicho género y cantidad de horas.
 
 def PlayTimeGenre_fun(genero: str):
+    users_items_suma = users_items.groupby('item_id')['playtime_forever'].sum().reset_index()
     
-    users_items_suma= users_items.groupby('item_id')['playtime_forever'].sum().reset_index()
-    
-    #unifico el dataframeusers_items y steam_games
+    # Merge the dataframes
     funcion_1 = pd.merge(steam_games, users_items_suma, left_on='id', right_on='item_id')
 
-     # Verificar si la columna del género existe en el DataFrame
+    # Check if the genre column exists in the DataFrame
     if genero not in funcion_1.columns:
-        print(f"No existe el género '{genero}' en el DataFrame.")
-        return None
-    
-    # Filtrar el DataFrame para el género proporcionado
+        return {"error": f"No existe el género '{genero}' en el DataFrame."}
+
+    # Filter the DataFrame for the specified genre
     filtro_genero = funcion_1[funcion_1[genero] == 1]
 
     if filtro_genero.empty:
-        # Manejar el caso en que no hay juegos del género especificado
-        print(f"No hay juegos del género '{genero}")
-        return None
+        return {"error": f"No hay juegos del género '{genero}'."}
 
-    # Encontrar la fila con la máxima cantidad de horas de juego
+    # Find the row with the maximum playtime
     fila_max_horas = filtro_genero.loc[filtro_genero['playtime_forever'].idxmax()]
 
-    # Resultado como un diccionario
+    # Convert numpy.int64 to native Python types
+    horas_maximas = int(fila_max_horas['playtime_forever'])
+    year_con_mas_horas = int(fila_max_horas['Year'])
+
+    # Result as a dictionary
     resultado = {
         "nombre_genero": genero,
-        "año_con_más_horas": fila_max_horas['Year'],
-        "horas_máximas": fila_max_horas['playtime_forever']
+        "año_con_más_horas": year_con_mas_horas,
+        "horas_máximas": horas_maximas
     }
 
     return resultado
