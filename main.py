@@ -43,6 +43,15 @@ def UsersRecommend(año: int):
     except Exception as e:
         return {"Error":str(e)}
 
+@app.get('/UsersNotRecommend/{year}')
+def UsersRecommend(año: int):
+    """
+    Devuelve el top 3 de juegos MÁS recomendados por usuarios para el año dado
+    """
+    try:
+        return UsersNotRecommend_df(año)
+    except Exception as e:
+        return {"Error":str(e)}
 
 
 if __name__ == "__main__":

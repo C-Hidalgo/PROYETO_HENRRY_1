@@ -104,3 +104,25 @@ def UsersRecommend_df(año: int):
     resultado = [{"Puesto {}: ".format(i + 1): juego} for i, juego in enumerate(top_juegos['app_name'])]
 
     return resultado
+
+### FUNCION Nº4 def UsersWorstDeveloper ###
+### Devuelve el top 3 de juegos MENOS recomendados por usuarios para el año dado
+
+def UsersNotRecommend_df(año: int):
+
+    # Unifico los dos DataFrame user_reviews y steam_games, atravez de las columnas 'id' y 'item_id'
+    df_unido_f4= pd.merge(steam_games, user_reviews, left_on='id', right_on='item_id')
+
+   # Filtrar el DataFrame por el año y condiciones específicas
+    df_filtrado = df_unido_f4[(df_unido_f4['Year'] == año) & (df_unido_f4['recommend'] == False) & (df_unido_f4['sentiment_analysis'].isin([0]))]
+
+    # Agrupar por app_name y contar el número de recomendaciones
+    top_juegos = df_filtrado.groupby('app_name')['recommend'].sum().reset_index()
+
+    # Ordenar en orden descendente y seleccionar los 3 primeros
+    top_juegos = top_juegos.sort_values(by='recommend', ascending=False).head(3)
+
+    # Crear la lista de diccionarios con el formato deseado
+    resultado = [{"Puesto {}: ".format(i + 1): juego} for i, juego in enumerate(top_juegos['app_name'])]
+
+    return resultado
