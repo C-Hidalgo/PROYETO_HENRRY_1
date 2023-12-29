@@ -75,4 +75,9 @@ def UserForGenre_df(genero: str):
     # Convertir las horas jugadas a int
     playtime_by_year['playtime_forever'] = playtime_by_year['playtime_forever'].astype(int)
 
-    return max_playtime_user, playtime_by_year
+    # Convertir los resultados a JSON
+    max_playtime_user_json = json.dumps(max_playtime_user)
+    playtime_by_year_json = playtime_by_year.to_json(orient='records')
+
+    return max_playtime_user_json, playtime_by_year_json
+
