@@ -33,6 +33,17 @@ def UserForGenre(genero:str):
         return {"Error":str(e)}
 
 
+@app.get('/UsersRecommend/{year}')
+def UsersRecommend(año: int):
+    """
+    Devuelve el top 3 de juegos MÁS recomendados por usuarios para el año dado
+    """
+    try:
+        return UsersRecommend_df(año)
+    except Exception as e:
+        return {"Error":str(e)}
+
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=10000, debug=True)
