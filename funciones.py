@@ -126,3 +126,29 @@ def UsersNotRecommend_df(año: int):
     resultado = [{"Puesto {}: ".format(i + 1): juego} for i, juego in enumerate(top_juegos['app_name'])]
 
     return resultado
+
+
+ ### FUNCION 5 def sentiment_analysis ###
+
+# Según el año de lanzamiento, se devuelve una lista con la cantidad de registros
+# de reseñas de usuarios que se encuentran categorizadas con un analisis de sentimientos
+
+def sentiment_analysis_df(año: int):
+
+    # Unifico los dos DataFrame user_reviews y steam_games, atravez de las columnas 'id' y 'item_id'
+    df_unido_f5= pd.merge(steam_games, user_reviews, left_on='id', right_on='item_id')
+
+    # Filtrar el DataFrame por el desarrollador seleccionado
+    sentimientos = df_unido_f5[df_unido_f5['Year'] == año]
+
+    # Contar la cantidad total de registros de sentiment_analysis
+    conteo_sentimientos = sentimientos['sentiment_analysis'].value_counts().to_dict()
+
+    # Mapear los códigos de sentimientos a etiquetas
+    mapeo_sentimientos = {'Negative': 0, 'Neutral': 1, 'Positive': 2}
+    conteo_final = {clave: conteo_sentimientos.get(mapeo_sentimientos[clave], 0) for clave in mapeo_sentimientos}
+
+    # Crear el diccionario final con el nombre del desarrollador como llave
+    resultado = conteo_final
+
+    return resultado

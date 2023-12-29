@@ -43,6 +43,7 @@ def UsersRecommend(año: int):
     except Exception as e:
         return {"Error":str(e)}
 
+
 @app.get('/UsersNotRecommend/{year}')
 def UsersRecommend(año: int):
     """
@@ -53,6 +54,15 @@ def UsersRecommend(año: int):
     except Exception as e:
         return {"Error":str(e)}
 
+
+@app.get('/Sentimiento/{year}')
+def sentiment_analysis(año: int):
+    try:
+        return sentiment_analysis_df(año)
+    except Exception as e:
+        return {"Error": str(e)}
+
+    
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=10000, debug=True)
