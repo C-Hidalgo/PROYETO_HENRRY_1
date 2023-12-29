@@ -1,5 +1,7 @@
 from funciones import *
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 import pandas as pd
 import uvicorn
 
@@ -62,7 +64,12 @@ def sentiment_analysis(año: int):
     except Exception as e:
         return {"Error": str(e)}
 
-    
+
+@app.get("/Juegos/{id}")
+async def obtener_recomendaciones(id: int):
+    recomendaciones = recomendacion_juego(steam_games, id)
+    return JSONResponse(content={"recomendaciones": list(recomendaciones)})
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=10000, debug=True)

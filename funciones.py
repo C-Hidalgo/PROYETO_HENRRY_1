@@ -8,6 +8,10 @@ import seaborn as sns
 import re
 import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.neighbors import NearestNeighbors
+from sklearn.model_selection import train_test_split
+
 
 ### CARGA GENERAL DE DATASETS ###
 steam_games = pd.read_csv('./Datasets/steam_games.csv')
@@ -152,3 +156,24 @@ def sentiment_analysis_df(año: int):
     resultado = conteo_final
 
     return resultado
+
+
+def recomendacion_juego(steam_games, id):
+    # Filtra el DataFrame para obtener solo las filas correspondientes al juego de entrada
+    juego_input = steam_games[steam_games['id'] == id]
+
+    # Elimino la columna Year
+    juego_input = juego_input.drop('Year', axis=1)
+
+    # Filtra las columnas relacionadas con géneros
+    generos_cols = juego_input.columns[3:]
+
+    # Utiliza solo las columnas de géneros para el cálculo de similitud
+    X = juego_input[generos_cols]
+
+    # Recupera los nombres de las aplicaciones recomendadas basadas en contenido
+    juegos_recomendados = steam_games[
+        steam_games['id'] != id
+    ]['app_name'].values
+
+    return juegos_recomendados
