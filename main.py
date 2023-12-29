@@ -21,5 +21,18 @@ def PlayTimeGenre(genero:str):
         return {"Error":str(e)}
     
 
+@app.get('/User/{genero}')
+def UserForGenre(genero:str):
+    """
+   Devulve el usuario que acumula más horas jugadas para el género dado
+   y una lista de la acumulación de horas jugadas por año
+    """
+    try:
+        return UserForGenre_df(genero)
+    except Exception as e:
+        return {"Error":str(e)}
+
+
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=10000, debug=True)

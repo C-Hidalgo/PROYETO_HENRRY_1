@@ -48,3 +48,29 @@ def PlayTimeGenre_fun(genero: str):
     }
 
     return resultado
+
+
+### FUNCION Nº2 (def UserForGenre)###
+# Devuelve el usuario que acumula más horas jugadas para el género dado
+#  y una lista de la acumulación de horas jugadas por año
+
+def UserForGenre_df(genero: str):
+        
+    # Merge the dataframes
+    funcion_2 = pd.merge(steam_games, users_items, left_on='id', right_on='item_id')
+  
+    # Verificar si la columna del género existe en el DataFrame
+    if genero not in funcion_2.columns:
+        print(f"No existe el género '{genero}' en el DataFrame.")
+        return None
+
+    # Filtrar el DataFrame por el género dado
+    df_genre = funcion_2[funcion_2[genero] == 1]
+
+    # Encontrar al usuario con más horas jugadas para el género dado
+    max_playtime_user = df_genre.groupby('user_id')['playtime_forever'].sum().idxmax()
+
+    # Crear una lista de la acumulación de horas jugadas por año
+    playtime_by_year = df_genre.groupby('Year')['playtime_forever'].sum().reset_index()
+
+    return max_playtime_user, playtime_by_year
