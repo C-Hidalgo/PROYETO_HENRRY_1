@@ -6,6 +6,16 @@
 
 ---
 
+## **`Tabla de Contenidos`**
+
+- [Introducción](#introducción)
+- [Desarrollo](#desarrollo)
+    - [ETL](#exploración-transformación-y-carga-etl)
+    - [EDA](#Proceso-de-Análisis-Exploratorio-de-Datos-(EDA))
+    - [Sistema de recomendación](#modelo-de-recomendación)
+    - [Despliegue de la API](#despliegue-para-la-api)
+- [Contacto](#contacto)
+
 
 - ## **`Links`**
     - [Carpeta con los dataset](./Datasets/)
@@ -34,10 +44,6 @@ Desarrollaremos modelos de Machine Learning con el objetivo de comprender las re
 
 ¡Estamos emocionados por abordar este proyecto y aprovechar al máximo nuestras habilidades en Data Science!
 
-
-## Diccionario de los Datos
-
-<p align="center"><img src="./Imagenes/Diccionario de Datos STEAM.jpeg"></p>
 
 ---
 
@@ -124,10 +130,71 @@ Descompresión del Conjunto de Datos
 Se desarrollaron las siguientes funciones, a las cuales se podrá acceder desde la API en la página Render:
 
 - **'def PlayTimeGenre( genero: str )'**: Retorna el año con más horas jugadas para dicho género.
+
 - **'def UserForGenre( genero: str )'**: Retorna el usuario que acumula más horas jugadas para el género dado y una lista de la acumulación de horas jugadas por año.
+
 - **'def UsersRecommend( año: int )'**: Devuelve el top 3 de juegos MÁSrecomendados por usuarios para el año dado. (reviews.recommend = True y comentarios positivos/neutrales).
+
 - **'def UsersWorstDeveloper( año: int )'**: Devuelve el top 3 de desarrolladores con juegos MENOS recomendados por usuarios para el año dado. (reviews.recommend = False y comentarios negativos).
+
 - **'def sentiment_analysis( empresa desarrolladora: str )**': Según la empresa desarrolladora, se devuelve un diccionario con el nombre de la desarrolladora como llave y una lista con la cantidad total de registros de reseñas de usuarios que se encuentran categorizados con un análisis de sentimiento como valor.
+
+
+### Proceso de Análisis Exploratorio de Datos (EDA)
+
+## `Steam Games`:
+#### Carga de Datos:
+
+Se cargó el conjunto de datos de juegos de Steam desde el archivo "steam_games.csv" utilizando la biblioteca pandas.
+
+#### Visualización Inicial:
+Se mostraron las primeras tres filas del DataFrame para obtener una visión general de los datos y verificar la estructura del conjunto de datos.
+
+#### Tipos de Datos:
+Se inspeccionaron los tipos de datos de cada columna para comprender la naturaleza de las variables presentes en el conjunto de datos.
+
+#### Manejo de Nulos:
+Se verificó la presencia de valores nulos en el conjunto de datos. Afortunadamente, no se encontraron valores nulos en ninguna columna.
+
+#### Exploración de Años:
+Se exploraron los años únicos presentes en el conjunto de datos y se verificó la distribución de juegos lanzados a lo largo del tiempo.
+
+#### Análisis de Géneros:
+Se visualizó la distribución de géneros de juegos, calculando la cantidad de juegos por género y creando un gráfico de barras horizontales.
+
+## `User Reviews`:
+
+#### Carga de Datos:
+Se cargó el conjunto de datos de revisiones de usuarios desde el archivo "user_reviews.csv" utilizando la biblioteca pandas.
+
+#### Visualización Inicial:
+Se mostraron tres filas aleatorias del DataFrame para obtener una visión inicial de los datos.
+
+#### Tipos de Datos:
+Se inspeccionaron los tipos de datos de cada columna para entender la información que representan.
+
+#### Manejo de Nulos:
+Se verificó la presencia de valores nulos en el conjunto de datos, y no se encontraron valores nulos en ninguna columna.
+
+#### Análisis de Sentimientos:
+Se visualizaron las opiniones de los usuarios mediante un histograma, diferenciando entre opiniones negativas, neutrales y positivas.
+
+## `Users Items Dataset`:
+
+#### Carga de Datos:
+
+Se cargó el conjunto de datos de usuarios e items desde el archivo "users_items.csv" utilizando pandas.
+
+#### Visualización Inicial:
+Se mostraron tres filas aleatorias del DataFrame para obtener una visión general de los datos.
+
+#### Tipos de Datos:
+Se inspeccionaron los tipos de datos de cada columna para entender la información que representan.
+
+#### Manejo de Nulos:
+Se verificó la presencia de valores nulos en el conjunto de datos y no se encontraron valores nulos en ninguna columna.
+
+Este proceso de Análisis Exploratorio de Datos proporciona una base sólida para comprender la estructura y las características de los conjuntos de datos, facilitando análisis posteriores y la construcción de modelos de recomendación.
 
 
 ### Modelo de Recomendación
