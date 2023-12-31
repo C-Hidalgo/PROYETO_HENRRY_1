@@ -18,6 +18,7 @@ steam_games = pd.read_csv('./Datasets/steam_games.csv')
 user_reviews = pd.read_csv('./Datasets/user_reviews.csv')
 users_items = pd.read_csv('./Datasets/users_items.csv')
 
+
 ### FUNCION Nº1 (PlayTimeGenre)###
 # Devuelve el año con mas horas jugadas para dicho género y cantidad de horas.
 
@@ -158,22 +159,42 @@ def sentiment_analysis_df(año: int):
     return resultado
 
 
-def recomendacion_juego(steam_games, id):
-    # Filtra el DataFrame para obtener solo las filas correspondientes al juego de entrada
-    juego_input = steam_games[steam_games['id'] == id]
 
-    # Elimino la columna Year
-    juego_input = juego_input.drop('Year', axis=1)
+#### FUNCION 6 obtener_juegos_similares ###
 
-    # Filtra las columnas relacionadas con géneros
-    generos_cols = juego_input.columns[3:]
+### Sistema de recomendacion de juegos
 
-    # Utiliza solo las columnas de géneros para el cálculo de similitud
-    X = juego_input[generos_cols]
+def preparar_datos(steam_games):
+    # Eliminamos las columnas 'id', 'Year', 'app_name'
+    genres_df = steam_games.drop(['id', 'Year', 'app_name'], axis=1)
 
-    # Recupera los nombres de las aplicaciones recomendadas basadas en contenido
-    juegos_recomendados = steam_games[
-        steam_games['id'] != id
-    ]['app_name'].values
+    # Calculamos la similitud del coseno entre los juegos
+    cosine_sim = cosine_similarity(genres_df, genres_df)
 
-    return juegos_recomendados
+    # Creamos un diccionario que asocia el índice del juego con su nombre
+    indices = pd.Series(steam_games.index, index=steam_games['app_name']).to_dict()
+
+    return cosine_sim, indices
+
+def obtener_juegos_similares(nombre_juego, cosine_sim, indices, steam_games):
+    # Obtenemos el índice del juego dado su nombre
+    idx = indices.get(nombre_juego, -1)
+
+    if idx == -1:
+        print(f'El juego "{nombre_juego}" no se encuentra en el conjunto de steam_games.')
+        return []
+
+    # Obtenemos las puntuaciones de similitud del juego con otros juegos
+    sim_scores = list(enumerate(cosine_sim[idx]))
+
+    # Ordenamos los juegos según las puntuaciones de similitud
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+
+    # Tomamos los primeros 10 juegos (excluyendo el propio juego)
+    sim_scores = sim_scores[1:11]
+
+    # Obtenemos los índices de los juegos similares
+    juego_indices = [i[0] for i in sim_scores]
+
+    # Devolvemos los nombres de los juegos similares sin el índice
+    return steam_games['app_name'].iloc[juego_indices].values

@@ -3,9 +3,9 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import pandas as pd
-import uvicorn
 
 app = FastAPI()
+
 
 @app.get('/')
 def bienvenida():
@@ -65,10 +65,16 @@ def sentiment_analysis(año: int):
         return {"Error": str(e)}
 
 
-@app.get("/Juegos/{id}")
-async def obtener_recomendaciones(id: int):
-    recomendaciones = recomendacion_juego(steam_games, id)
-    return JSONResponse(content={"recomendaciones": list(recomendaciones)})
+
+steam_games = pd.read_csv('./Datasets/steam_games.csv')
+cosine_sim, indices = preparar_datos(steam_games)
+
+@app.get('/juegos_similares/{game_name}')
+async def obtener_juegos_similares_endpoint(game_name: str):
+    juegos_similares = obtener_juegos_similares(game_name, cosine_sim, indices, steam_games)
+    
+    return {"juegos_similares": list(juegos_similares)}
+
 
 
 if __name__ == "__main__":
